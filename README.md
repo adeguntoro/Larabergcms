@@ -22,7 +22,7 @@ Install it in a fresh Laravel application and you get a working post CRUD with t
 ## Installation
 
 ```bash
-composer require larabergcms/larabergcms
+composer require adeguntoro/larabergcms
 ```
 
 Publish the van-ons/laraberg editor assets (the compiled `laraberg.js` / CSS used by every view):
@@ -243,10 +243,20 @@ The views will be copied to `resources/views/vendor/larabergcms/` and take prece
 
 ## Publishing to Packagist
 
-1. Create a repository on GitHub (e.g. `larabergcms/larabergcms`) and push this package.
+1. Create a repository on GitHub (e.g. `adeguntoro/larabergcms`) and push this package.
 2. Create a tag and push it: `git tag v1.0.0 && git push origin v1.0.0`.
 3. On [packagist.org](https://packagist.org), click **Submit package**, enter the GitHub URL and submit.
 4. Authenticate Packagist with the GitHub repo (Settings → Service Hooks / Webhooks) so new tags publish automatically.
+
+## Credits
+
+Big thanks to the **Van Ons** team for creating and maintaining [van-ons/laraberg](https://github.com/VanOns/laraberg) — the WordPress Gutenberg editor running inside Laravel. This package is a thin CMS layer on top of their excellent work; all the block-editing magic belongs to them.
+
+Also bundled locally (all MIT-licensed):
+
+- [Bootstrap](https://getbootstrap.com) 5.3.3
+- [React](https://react.dev) 17
+- [Playfair Display](https://fonts.google.com/specimen/Playfair+Display) and [Source Sans 3](https://fonts.google.com/specimen/Source+Sans+3) by Google Fonts
 
 ## License
 

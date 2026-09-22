@@ -1,5 +1,5 @@
 {
-    "name": "larabergcms/larabergcms",
+    "name": "adeguntoro/larabergcms",
     "description": "Gutenberg-style content management for Laravel, built on van-ons/laraberg. Installable CRUD, media upload and Blade views.",
     "keywords": [
         "laravel",
