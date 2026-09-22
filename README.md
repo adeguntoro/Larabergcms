@@ -4,6 +4,9 @@ Gutenberg-style content management for Laravel, built on top of [van-ons/laraber
 
 Install it in a fresh Laravel application and you get a working post CRUD with the WordPress Gutenberg block editor, category support and media upload — no extra wiring needed.
 
+This package is a simplified and modified version of Laraberg for Laravel. I created it out of frustration with how much setup and configuration was needed to get Laraberg working the way I wanted. Instead of dealing with unnecessary complexity just to have a Gutenberg-style editor in a Laravel application, I wanted something that was easier to install, configure, and use. This package is my attempt to make that experience as simple and straightforward as possible.
+
+
 ## Features
 
 - Full post management (`index / create / store / show / edit / update / destroy`)
