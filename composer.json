@@ -18,7 +18,8 @@
     },
     "autoload": {
         "psr-4": {
-            "LarabergCms\\LarabergCms\\": "src/"
+            "LarabergCms\\LarabergCms\\": "src/",
+            "LarabergCms\\LarabergCms\\Database\\Seeders\\": "database/seeders/"
         }
     },
     "extra": {

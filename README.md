@@ -16,6 +16,7 @@ This package is a simplified and modified version of Laraberg for Laravel. I cre
 - Slug auto-generation with `-1`, `-2`, ... deduplication
 - Publish date + status (`draft`, `published`, `archived`)
 - Blade views published into your app so you can restyle them
+- Ships a `CategorySeeder` with dummy categories for local development (see [Demo data](#demo-data))
 
 ## Requirements
 
@@ -31,13 +32,19 @@ composer require adeguntoro/larabergcms
 Publish the van-ons/laraberg editor assets (the compiled `laraberg.js` / CSS used by every view):
 
 ```bash
-php artisan vendor:publish --provider="VanOns\Laraberg\LarabergServiceProvider"
+php artisan vendor:publish --provider="VanOns\Laraberg\LarabergServiceProvider" --tag=public
 ```
 
 Run the migrations:
 
 ```bash
 php artisan migrate
+```
+
+Optional dummy categories for local testing (see [Demo data](#demo-data)):
+
+```bash
+php artisan db:seed --class="LarabergCms\LarabergCms\Database\Seeders\CategorySeeder"
 ```
 
 Link storage for media uploads (when using the default `public` disk):
@@ -192,6 +199,33 @@ use LarabergCms\LarabergCms\Models\Laraberg;
 $posts = Laraberg::where('status', 'published')->latest()->paginate(10);
 ```
 
+Each post belongs to a category (`larabergs.category_id`, nullable). The relations and the category model:
+
+```php
+use LarabergCms\LarabergCms\Models\Category;
+
+$post->category;       // BelongsTo
+$category->larabergs;  // HasMany
+```
+
+## Demo data
+
+The package ships a `CategorySeeder` with dummy categories — handy while wiring the editor up locally, because it fills the category dropdown on the create/edit screens:
+
+```bash
+php artisan migrate
+php artisan db:seed --class="LarabergCms\LarabergCms\Database\Seeders\CategorySeeder"
+```
+
+Seeding is idempotent: categories are matched on `slug`, so running it again updates the existing rows instead of creating duplicates. You can also call it from your own `DatabaseSeeder`:
+
+```php
+public function run(): void
+{
+    $this->call(\LarabergCms\LarabergCms\Database\Seeders\CategorySeeder::class);
+}
+```
+
 ## Configuration
 
 Copy the config file to customize route prefix, middleware and upload disk:
@@ -244,6 +278,8 @@ php artisan vendor:publish --tag=larabergcms-views
 
 The views will be copied to `resources/views/vendor/larabergcms/` and take precedence over the package's built-in views.
 
+> **Careful when editing the script tags:** keep `laraberg.js` as `<script type="module">` and keep it *after* the `@vite([...])` entry. The Vite bundle is what publishes `window.React` / `window.ReactDOM`, and module scripts run in document order — removing `type="module"` or moving the tag above the `@vite` line brings back `Laraberg is not defined` (see [Troubleshooting](#troubleshooting)).
+
 ## Troubleshooting
 
 ### `Laraberg is not defined` (browser console)
@@ -280,7 +316,7 @@ compiled.
 ## Publishing to Packagist
 
 1. Create a repository on GitHub (e.g. `adeguntoro/larabergcms`) and push this package.
-2. Create a tag and push it: `git tag v1.0.0 && git push origin v1.0.0`.
+2. Create a tag and push it: `git tag v1.0.2 && git push origin v1.0.2` — bump the version for every release; Packagist picks new tags up automatically.
 3. On [packagist.org](https://packagist.org), click **Submit package**, enter the GitHub URL and submit.
 4. Authenticate Packagist with the GitHub repo (Settings → Service Hooks / Webhooks) so new tags publish automatically.
 
