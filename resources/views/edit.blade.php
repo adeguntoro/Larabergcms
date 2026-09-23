@@ -134,7 +134,11 @@
         </form>
     </div>
 
-    <script src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
+    {{-- Loaded as a module so it executes after the deferred @vite entry that
+         publishes window.React / window.ReactDOM (see resources/vendor/larabergcms).
+         A classic script runs during parsing, before deferred modules, which
+         leaves the global `Laraberg` undefined. --}}
+    <script type="module" src="{{ asset('vendor/laraberg/js/laraberg.js') }}"></script>
 
     <script>
         function mediaUpload({ filesList, onError, onFileChange }) {

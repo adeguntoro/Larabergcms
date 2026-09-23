@@ -244,6 +244,39 @@ php artisan vendor:publish --tag=larabergcms-views
 
 The views will be copied to `resources/views/vendor/larabergcms/` and take precedence over the package's built-in views.
 
+## Troubleshooting
+
+### `Laraberg is not defined` (browser console)
+
+The editor itself (`van-ons/laraberg`) is served as a static file from
+`public/vendor/laraberg/`. If those assets were never published the `<script>`
+in the create/edit views 404s and the global `Laraberg` does not exist, so
+`Laraberg.init(...)` throws:
+
+```bash
+php artisan vendor:publish --provider="VanOns\Laraberg\LarabergServiceProvider" --tag=public
+```
+
+Check that `https://your-app.test/vendor/laraberg/js/laraberg.js` returns **200**
+and not 404.
+
+### `Minified React error #227` / `window.React is undefined`
+
+`larabergcms.js` bundles React 17 + ReactDOM 17 and publishes them as
+`window.React` / `window.ReactDOM` for van-ons/laraberg. If the published copy of
+that file (or `public/build`) is older than this package, the stale bundle keeps
+running the previous version. Re-publish the assets **with `--force`** and
+rebuild:
+
+```bash
+php artisan vendor:publish --tag=larabergcms-assets --force
+npm run build
+```
+
+Remember to re-run `npm run build` (or `npm run dev`) whenever the published
+`resources/vendor/larabergcms/*` files change — Vite only serves what it has
+compiled.
+
 ## Publishing to Packagist
 
 1. Create a repository on GitHub (e.g. `adeguntoro/larabergcms`) and push this package.
